@@ -13,7 +13,6 @@ import java.util.UUID;
 @RequestMapping("/cidade")
 public class CidadeController {
     private CidadeService cidadeService;
-
     public CidadeController(CidadeService cidadeService) {
         this.cidadeService = cidadeService;
     }
