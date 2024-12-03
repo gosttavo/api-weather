@@ -5,7 +5,7 @@ Este é um projeto de API para gerenciar cidades, regiões e condições climát
 ## Executando o Projeto
 
 1. Execute o comando `docker-compose up -d` na raiz do projeto para iniciar a aplicação.
-2. OU simplesmente acesse a url: https://scanapp-440915.uc.r.appspot.com
+2. OU simplesmente utilize a API em produção [aqui.](https://www.postman.com/docking-module-engineer-51209893/satc/collection/g83yng3/api-backend?action=share&creator=37154045)
 
 ---
 
