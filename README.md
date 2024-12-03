@@ -38,20 +38,23 @@ Lista todas as regiões cadastradas.
 
 **Resposta de Sucesso:**
 ```json
-[
-  {
-    "id": "1",
-    "nome": "Norte"
-  },
-  {
-    "id": "2",
-    "nome": "Sul"
-  }
-]
+{
+  "data": [
+    {
+      "id": "1",
+      "nome": "Norte"
+    },
+    {
+      "id": "2",
+      "nome": "Sul"
+    }
+  ],
+  "message": null
+}
 ```
 
 Respostas de erro:
-* `204` - Nenhuma região encontrada.
+* `500` - Erro interno no servidor.
 
 #### `GET /regiao/{id}`
 
@@ -60,14 +63,19 @@ Retorna os detalhes de uma região específica pelo `id`.
 **Resposta de Sucesso:**
 ```json
 {
-  "id": "1",
-  "nome": "Norte"
+  "data": [
+    {
+      "id": "1",
+      "nome": "Norte"
+    }
+  ],
+  "message": null
 }
 ```
 
 Respostas de Erro:
 * `404` - Região não encontrada.
-* `400` - id inválido.
+* `500` - Erro interno no servidor.
 
 #### `POST /regiao`
 
@@ -83,14 +91,19 @@ Corpo da Requisição:
 Corpo da Resposta:
 ````json
 {
-  "id": "3",
-  "nome": "Sudeste"
+  "data": [
+    {
+      "id": "3",
+      "nome": "Sudeste"
+    }
+  ],
+  "message": null
 }
 ````
 
 Respostas de Erro:
-  * `400` - Dados inválidos.
-  * `409` - Região já cadastrada.
+* `400` - Dados inválidos.
+* `500` - Erro interno no servidor.
 
 #### `PUT /regiao/{id}`
 
@@ -106,32 +119,30 @@ Corpo da Requisição:
 Corpo da Resposta:
 ````json
 {
-  "id": "3",
-  "nome": "Sudeste"
+  "data": [
+    {
+      "id": "3",
+      "nome": "Sudeste"
+    }
+  ],
+  "message": null
 }
 ````
 
 Respostas de erro:
-* `400` - `id` inválido;
 * `404` - região não encontrada;
+* `500` - Erro interno no servidor.
 
 #### `DELETE /regiao/{id}`
 
 Deleta uma região específica pelo `id`.
 
 Corpo da Resposta:
-````json
-[
-  {
-    "id": "1",
-    "nome": "Norte"
-  }
-]
-````
+* `204` - No content;
 
 Respostas de erro:
-* `400` - `id` inválido;
 * `404` - região não encontrada;
+* `500` - Erro interno no servidor.
 
 
 ### **Cidade**
@@ -142,20 +153,23 @@ Lista todas as cidades cadastradas.
 
 **Resposta de Sucesso:**
 ```json
-[
-  {
-    "id": "1",
-    "nome": "Criciuma",
-    "pais": "BR",
-    "latitude": 0,
-    "longitude": 0,
-    "regiaoId": "1"
-  }
-]
+{
+  "data": [
+    {
+      "id": "1",
+      "nome": "Criciuma",
+      "pais": "BR",
+      "latitude": 0,
+      "longitude": 0,
+      "regiaoId": "1"
+    }
+  ],
+  "message": null
+}
 ```
 
 Respostas de erro:
-* `204` - Nenhuma cidade encontrada.
+* `500` - Erro interno no servidor.
 
 #### `GET /cidade/{id}`
 
@@ -175,7 +189,7 @@ Retorna os detalhes de uma cidade específica pelo `id`.
 
 Respostas de Erro:
 * `404` - Cidade não encontrada.
-* `400` - id inválido.
+* `500` - Erro interno no servidor.
 
 #### `POST /regiao`
 
@@ -193,18 +207,23 @@ Corpo da Requisição:
 Corpo da Resposta:
 ````json
 {
-  "id": "2",
-  "nome": "Icara",
-  "pais": "BR",
-  "latitude": -28.7133,
-  "longitude": -49.3,
-  "regiaoId": "1"
+  "data": [
+    {
+      "id": "2",
+      "nome": "Icara",
+      "pais": "BR",
+      "latitude": -28.7133,
+      "longitude": -49.3,
+      "regiaoId": "1"
+    }
+  ],
+  "message": null,
 }
 ````
 
 Respostas de Erro:
   * `400` - Dados inválidos.
-  * `409` - Cidade já cadastrada.
+  * `500` - Erro interno no servidor.
 
 #### `PUT /cidade/{id}`
 
@@ -220,40 +239,34 @@ Corpo da Requisição:
 Corpo da Resposta:
 ````json
 {
-  "id": "2",
-  "nome": "Içara",
-  "pais": "BR",
-  "latitude": -28.7133,
-  "longitude": -49.3,
-  "regiaoId": "1"
+  "data": [
+    {
+      "id": "2",
+      "nome": "Içara",
+      "pais": "BR",
+      "latitude": -28.7133,
+      "longitude": -49.3,
+      "regiaoId": "1"
+    }
+  ],
+  "message": null
 }
 ````
 
 Respostas de erro:
-* `400` - `id` inválido;
 * `404` - cidade não encontrada;
+* `500` - Erro interno no servidor.
 
 #### `DELETE /cidade/{id}`
 
 Deleta uma cidade específica pelo `id`.
 
 Corpo da Resposta:
-````json
-[
-  {
-    "id": "1",
-    "nome": "Criciuma",
-    "pais": "BR",
-    "latitude": -28.6775,
-    "longitude": -49.3697,
-    "regiaoId": "1"
-  }
-]
-````
+* `204` - No content;
 
 Respostas de erro:
-* `400` - `id` inválido;
 * `404` - cidade não encontrada;
+* `500` - Erro interno no servidor.
 
 
 ### **Clima**
@@ -263,8 +276,41 @@ Respostas de erro:
 Lista todas os climas cadastrados
 **Resposta de Sucesso:**
 ```json
-[
-  {
+{
+  "data": [
+    {
+      "id": "1",
+      "temperatura": 18.57,
+      "humidade": 88,
+      "dateTime": "2024-12-02T23:33:04.180511",
+      "cidade": {
+        "id": "1",
+        "nome": "Criciuma",
+        "pais": "BR",
+        "latitude": -28.6775,
+        "longitude": -49.3697,
+        "regiao": {
+          "id": "1",
+          "nome": "Sul"
+        }
+      }
+    }
+  ],
+  "message": null
+}
+```
+
+Respostas de erro:
+* `500` - Erro interno no servidor.
+
+#### `GET /clima/{id}`
+
+Retorna os detalhes de um clima específico pelo `id`.
+
+**Resposta de Sucesso:**
+```json
+{
+  "data": {
     "id": "1",
     "temperatura": 18.57,
     "humidade": 88,
@@ -280,41 +326,14 @@ Lista todas os climas cadastrados
         "nome": "Sul"
       }
     }
-  }
-]
-```
-
-Respostas de erro:
-* `204` - Nenhum clima encontrado.
-
-#### `GET /clima/{id}`
-
-Retorna os detalhes de um clima específico pelo `id`.
-
-**Resposta de Sucesso:**
-```json
-{
-  "id": "1",
-  "temperatura": 18.57,
-  "humidade": 88,
-  "dateTime": "2024-12-02T23:33:04.180511",
-  "cidade": {
-    "id": "1",
-    "nome": "Criciuma",
-    "pais": "BR",
-    "latitude": -28.6775,
-    "longitude": -49.3697,
-    "regiao": {
-      "id": "1",
-      "nome": "Sul"
-    }
-  }
+  },
+  "message": null
 }
 ```
 
 Respostas de Erro:
 * `404` - Clima não encontrado.
-* `400` - id inválido.
+* `500` - Erro interno no servidor.
 
 #### `GET /clima/cidade/{id}`
 
@@ -323,25 +342,27 @@ Retorna os detalhes de um clima específico pelo `id` da cidade.
 **Resposta de Sucesso:**
 ```json
 {
-  "id": "1",
-  "temperatura": 18.57,
-  "humidade": 88,
-  "dateTime": "2024-12-02T23:33:04.180511",
-  "cidade": {
+  "data": {
     "id": "1",
-    "nome": "Criciuma",
-    "pais": "BR",
-    "latitude": -28.6775,
-    "longitude": -49.3697,
-    "regiao": {
+    "temperatura": 18.57,
+    "humidade": 88,
+    "dateTime": "2024-12-02T23:33:04.180511",
+    "cidade": {
       "id": "1",
-      "nome": "Sul"
+      "nome": "Criciuma",
+      "pais": "BR",
+      "latitude": -28.6775,
+      "longitude": -49.3697,
+      "regiao": {
+        "id": "1",
+        "nome": "Sul"
+      }
     }
-  }
+  },
+  "message": null
 }
 ```
 
 Respostas de Erro:
-* `404` - Clima não encontrado.
-* `404` - Cidade não encontrada.
-* `400` - id inválido.
+* `404` - Clima não encontrado para a cidade especificada.
+* `500` - Erro interno no servidor.
