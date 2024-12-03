@@ -10,7 +10,6 @@ public class RegiaoMapper {
         RegiaoDTO dto = new RegiaoDTO();
         dto.setId(regiao.getId());
         dto.setNome(regiao.getNome());
-        dto.setCidades(regiao.getCidades());
         return dto;
     }
 
@@ -18,7 +17,6 @@ public class RegiaoMapper {
         Regiao regiao = new Regiao();
         regiao.setId(dto.getId());
         regiao.setNome(dto.getNome());
-        regiao.setCidades(dto.getCidades());
         return regiao;
     }
 }

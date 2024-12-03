@@ -14,9 +14,6 @@ public class Regiao {
     @Column(nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "regiao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cidade> cidades;
-
     public UUID getId() {
         return id;
     }
@@ -31,13 +28,5 @@ public class Regiao {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Cidade> getCidades() {
-        return cidades;
-    }
-
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
     }
 }

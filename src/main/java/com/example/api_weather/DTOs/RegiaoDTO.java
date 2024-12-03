@@ -8,7 +8,6 @@ import java.util.UUID;
 public class RegiaoDTO {
     private UUID id;
     private String nome;
-    private List<Cidade> cidades;
 
     public UUID getId() {
         return id;
@@ -24,13 +23,5 @@ public class RegiaoDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Cidade> getCidades() {
-        return cidades;
-    }
-
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
     }
 }
