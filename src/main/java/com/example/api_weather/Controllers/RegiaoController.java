@@ -1,5 +1,6 @@
 package com.example.api_weather.Controllers;
 
+import com.example.api_weather.ApiResponse.ApiResponse;
 import com.example.api_weather.DTOs.RegiaoDTO;
 import com.example.api_weather.Services.RegiaoService;
 import org.springframework.http.HttpStatus;
@@ -19,28 +20,67 @@ public class RegiaoController {
     }
 
     @GetMapping
-    public List<RegiaoDTO> getAll() {
-        return regiaoService.findAll();
+    public ResponseEntity<ApiResponse<List<RegiaoDTO>>> getAll() {
+        try {
+            return ResponseEntity.ok(new ApiResponse<>(regiaoService.findAll(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RegiaoDTO> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(regiaoService.findById(id));
+    public ResponseEntity<ApiResponse<RegiaoDTO>> getById(@PathVariable UUID id) {
+        try {
+            RegiaoDTO regiao = regiaoService.findById(id);
+            return ResponseEntity.ok(new ApiResponse<>(regiao, null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(null, "Recurso não encontrado"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(null, "Erro interno no servidor"));
+        }
     }
 
     @PostMapping
-    public ResponseEntity<RegiaoDTO> create(@RequestBody RegiaoDTO regiaoDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(regiaoService.create(regiaoDTO));
+    public ResponseEntity<ApiResponse<RegiaoDTO>> create(@RequestBody RegiaoDTO regiaoDTO) {
+        try {
+            RegiaoDTO novaRegiao = regiaoService.create(regiaoDTO);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(novaRegiao, "Região criada com sucesso"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(null, "Erro ao criar a região: dados inválidos"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, "Erro interno ao criar a região"));
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RegiaoDTO> update(@PathVariable UUID id, @RequestBody RegiaoDTO regiaoDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(regiaoService.update(regiaoDTO));
+    public ResponseEntity<ApiResponse<RegiaoDTO>> update(@PathVariable UUID id, @RequestBody RegiaoDTO regiaoDTO) {
+        try {
+            RegiaoDTO regiaoAtualizada = regiaoService.update(regiaoDTO);
+            return ResponseEntity.ok(new ApiResponse<>(regiaoAtualizada, "Região atualizada com sucesso"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(null, "Região não encontrada"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, "Erro interno ao atualizar a região"));
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        regiaoService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable UUID id) {
+        try {
+            regiaoService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new ApiResponse<>(null, "Região excluída com sucesso"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(null, "Região não encontrada"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, "Erro interno ao excluir a região"));
+        }
     }
 }

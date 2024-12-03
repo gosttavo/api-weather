@@ -1,5 +1,6 @@
 package com.example.api_weather.Controllers;
 
+import com.example.api_weather.ApiResponse.ApiResponse;
 import com.example.api_weather.DTOs.ClimaDTO;
 import com.example.api_weather.Services.ClimaService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,33 +22,41 @@ public class ClimaController {
     }
 
     @GetMapping
-    public List<ClimaDTO> getAll() {
-        return climaService.findAll();
+    public ResponseEntity<ApiResponse<List<ClimaDTO>>> getAll() {
+        try {
+            List<ClimaDTO> climas = climaService.findAll();
+            return ResponseEntity.ok(new ApiResponse<>(climas, null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, "Erro ao buscar climas"));
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClimaDTO> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(climaService.findById(id));
+    public ResponseEntity<ApiResponse<ClimaDTO>> getById(@PathVariable UUID id) {
+        try {
+            ClimaDTO clima = climaService.findById(id);
+            return ResponseEntity.ok(new ApiResponse<>(clima, null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(null, "Clima não encontrado"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, "Erro interno no servidor"));
+        }
     }
 
     @GetMapping("/cidade/{id}")
-    public ResponseEntity<ClimaDTO> getByCity(@PathVariable UUID id) {
-        return ResponseEntity.ok(climaService.findByCityId(id));
+    public ResponseEntity<ApiResponse<ClimaDTO>> getByCity(@PathVariable UUID id) {
+        try {
+            ClimaDTO clima = climaService.findByCityId(id);
+            return ResponseEntity.ok(new ApiResponse<>(clima, null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(null, "Clima não encontrado para a cidade especificada"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(null, "Erro interno no servidor"));
+        }
     }
-
-    //@PostMapping
-    // public ResponseEntity<ClimaDTO> create(@RequestBody ClimaDTO climaDTO) {
-    //    return ResponseEntity.status(HttpStatus.CREATED).body(climaService.create(climaDTO));
-    //}
-
-    //@PutMapping("/{id}")
-    //public ResponseEntity<ClimaDTO> update(@PathVariable UUID id, @RequestBody ClimaDTO climaDTO) {
-    //    return ResponseEntity.status(HttpStatus.OK).body(climaService.update(climaDTO));
-    //}
-
-    //@DeleteMapping("/{id}")
-    //public ResponseEntity<Void> delete(@PathVariable UUID id) {
-    //    climaService.delete(id);
-    //    return ResponseEntity.noContent().build();
-    //}
 }
