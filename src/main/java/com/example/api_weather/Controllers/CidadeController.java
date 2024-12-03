@@ -19,28 +19,56 @@ public class CidadeController {
     }
 
     @GetMapping
-    public List<CidadeDTO> getAll() {
-        return cidadeService.findAll();
+    public ResponseEntity<List<CidadeDTO>> getAll() {
+        try {
+            return ResponseEntity.ok(cidadeService.findAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CidadeDTO> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(cidadeService.findById(id));
+        try {
+            return ResponseEntity.ok(cidadeService.findById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
     public ResponseEntity<CidadeDTO> create(@RequestBody CidadeDTO cidadeDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.create(cidadeDTO));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(cidadeService.create(cidadeDTO));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CidadeDTO> update(@PathVariable UUID id, @RequestBody CidadeDTO cidadeDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(cidadeService.update(cidadeDTO));
+        try {
+            return ResponseEntity.ok(cidadeService.update(cidadeDTO));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        cidadeService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            cidadeService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
