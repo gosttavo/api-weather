@@ -4,8 +4,7 @@ Este é um projeto de API para gerenciar cidades, regiões e condições climát
 
 ## Executando o Projeto (???)
 
-1. Renomeie o arquivo `.env.template` para `.env` e preencha as variáveis de ambiente necessárias.
-2. Execute o comando `docker-compose up -d` na raiz do projeto para iniciar a aplicação.
+1. Execute o comando `docker-compose up -d` na raiz do projeto para iniciar a aplicação.
 
 ---
 
