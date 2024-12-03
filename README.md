@@ -2,7 +2,7 @@
 
 Este é um projeto de API para gerenciar cidades, regiões e condições climáticas, integrando-se à API do OpenWeather. Ele permite consultar, cadastrar, atualizar e excluir informações sobre regiões, cidades e condições climáticas.
 
-## Executando o Projeto (???)
+## Executando o Projeto
 
 1. Execute o comando `docker-compose up -d` na raiz do projeto para iniciar a aplicação.
 
