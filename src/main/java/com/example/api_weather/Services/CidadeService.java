@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CidadeService {
-    private static final Logger log = LoggerFactory.getLogger(CidadeService.class);
     private final CidadeRepository cidadeRepository;
     private final RegiaoRepository regiaoRepository;
     private final ClimaRepository climaRepository;
@@ -32,6 +31,13 @@ public class CidadeService {
         this.regiaoRepository = regiaoRepository;
         this.climaRepository = climaRepository;
         this.climaService = climaService;
+    }
+
+    private boolean isDuplicateCity(String nome, String pais, UUID excludeId) {
+        return cidadeRepository.findAll().stream()
+                .anyMatch(cidade -> cidade.getNome().equalsIgnoreCase(nome) &&
+                        cidade.getPais().equalsIgnoreCase(pais) &&
+                        (excludeId == null || !cidade.getId().equals(excludeId)));
     }
 
     public List<CidadeDTO> findAll() {
@@ -64,7 +70,6 @@ public class CidadeService {
 
         Cidade cidadeCriada = cidadeRepository.save(cidade);
 
-        // criar clima
         JsonNode currentWeather = openWeatherCity.get("list").get(0);
         Clima clima = new Clima();
         clima.setTemperatura(currentWeather.get("main").get("temp").asDouble()); // Temperatura
@@ -79,6 +84,14 @@ public class CidadeService {
     public CidadeDTO update(CidadeDTO cidadeDTO) {
         Cidade cidadeExistente = cidadeRepository.findById(cidadeDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+
+        if (!cidadeExistente.getPais().equals(cidadeDTO.getPais())) {
+            throw new RuntimeException("Não é permitido alterar o país da cidade.");
+        }
+
+        if (cidadeDTO.getRegiaoId() != null && !cidadeExistente.getRegiao().getId().equals(cidadeDTO.getRegiaoId())) {
+            throw new RuntimeException("Não é permitido alterar a região da cidade.");
+        }
 
         cidadeExistente.setNome(cidadeDTO.getNome());
         cidadeExistente.setPais(cidadeDTO.getPais());

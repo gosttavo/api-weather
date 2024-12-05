@@ -18,6 +18,12 @@ public class RegiaoService {
         this.regiaoRepository = regiaoRepository;
     }
 
+    private boolean isDuplicateRegion(String nome, UUID excludeId) {
+        return regiaoRepository.findAll().stream()
+                .anyMatch(regiao -> regiao.getNome().equalsIgnoreCase(nome) &&
+                        (excludeId == null || !regiao.getId().equals(excludeId)));
+    }
+
     public List<RegiaoDTO> findAll() {
         return regiaoRepository.findAll()
                 .stream()
@@ -32,6 +38,10 @@ public class RegiaoService {
     }
 
     public RegiaoDTO create(RegiaoDTO regiaoDTO) {
+        if (isDuplicateRegion(regiaoDTO.getNome(), null)) {
+            throw new RuntimeException("Já existe uma região com esse nome no mesmo país.");
+        }
+
         Regiao regiao = RegiaoMapper.toEntity(regiaoDTO);
         Regiao regiaoCriada = regiaoRepository.save(regiao);
         return RegiaoMapper.toDTO(regiaoCriada);
